@@ -1,0 +1,34 @@
+/* Capitec palette from the approved product specification. */
+:root {
+  color-scheme: light;
+  --color-brand: #0033a0;
+  --color-action: #205ed2;
+  --color-action-hover: #174bb0;
+  --color-accent: #e63934;
+  --color-ink: #17334a;
+  --color-muted: #607284;
+  --color-page: #f5f7fa;
+  --color-surface: #fff;
+  --color-border: #dfe6ed;
+  --color-tint: #eaf1fc;
+  --color-success: #176746;
+  --color-success-bg: #e9f6ef;
+  --color-warning: #85530c;
+  --color-warning-bg: #fff4df;
+  --color-danger: #b32732;
+  --color-danger-bg: #fff0f1;
+  --font-body: 'Nunito Sans', 'Segoe UI', Arial, sans-serif;
+  --font-heading: 'Flama', 'Segoe UI', Arial, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-panel: 0 4px 24px rgb(23 51 74 / 4%);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --content-width: 1200px;
+}

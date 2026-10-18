@@ -1,0 +1,24 @@
+flowchart LR
+    Dev[Developer]
+    Repo[GitHub mono-repo]
+    CI[Proposed GitHub Actions workflow]
+    Test[Unit, API, web, and performance tests]
+    Images[Build API and web images]
+    Compose[Local Docker Compose]
+    Pg[(PostgreSQL 16)]
+    Grate[Grate migrations]
+    Api[API]
+    Web[Next.js web]
+
+    Dev --> Repo
+    Repo --> CI
+    CI --> Test
+    Test --> Images
+    Dev --> Compose
+    Compose --> Pg
+    Compose --> Grate
+    Grate --> Pg
+    Compose --> Api
+    Api --> Pg
+    Compose --> Web
+    Web --> Api

@@ -1,0 +1,14 @@
+flowchart LR
+    Customer[Customer]
+    Portal[Customer portal]
+    Disputes[Dispute service]
+    Transactions[Transaction records]
+    History[Dispute history]
+    Confirmation[Simulated confirmation process]
+
+    Customer --> Portal
+    Portal --> Disputes
+    Disputes --> Transactions
+    Disputes --> History
+    History --> Confirmation
+    Confirmation --> Portal

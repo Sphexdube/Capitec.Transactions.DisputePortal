@@ -1,0 +1,19 @@
+flowchart LR
+    Browser[Customer browser]
+    Web[Next.js 16 UI and BFF]
+    Api[ASP.NET Core 10 API replicas]
+    App[Application handlers]
+    Domain[Domain dispute rules]
+    Persistence[Infrastructure persistence adapters]
+    Db[PostgreSQL 16]
+    Grate[Grate migration job]
+    Worker[Hosted outbox worker replicas]
+
+    Browser --> Web
+    Web -->|same-origin BFF requests| Api
+    Api --> App
+    App --> Domain
+    App --> Persistence
+    Persistence --> Db
+    Worker --> Persistence
+    Grate --> Db

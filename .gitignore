@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# .NET
+**/bin/
+**/obj/
+**/TestResults/
+*.user
+*.suo
+
+# Node.js and Next.js
+**/node_modules/
+**/.next/
+**/out/
+**/dist/
+**/coverage/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+**/secrets.json
+
+# Test and browser output
+playwright-report/
+test-results/
+# Generated tool output
+*.tsbuildinfo
+web/AGENTS.md

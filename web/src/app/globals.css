@@ -1,0 +1,103 @@
+@import '../styles/tokens.css';
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font: 15px/1.6 var(--font-body);
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+h1 {
+  font-size: clamp(28px, 3vw, 40px);
+  letter-spacing: -1.2px;
+  font-weight: 700;
+}
+h2 {
+  font-size: 21px;
+  letter-spacing: -0.4px;
+}
+h3 {
+  font-size: 17px;
+}
+a {
+  color: var(--color-action);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+:focus-visible {
+  outline: 3px solid var(--color-action);
+  outline-offset: 4px;
+}
+input,
+select,
+textarea {
+  min-width: 0;
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #aab9c7;
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+textarea {
+  resize: vertical;
+}
+label {
+  display: grid;
+  gap: 7px;
+  font-weight: 600;
+}
+small {
+  font-size: 12px;
+}
+::selection {
+  background: #d9e7ff;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/.DS_Store
+**/TestResults/
+.git/
+docs/
+test/
+**/node_modules/
+**/.next/
+web/test-results/
+web/playwright-report/
+web/.env*

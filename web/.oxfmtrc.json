@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    ".next/**",
+    "out/**",
+    "build/**",
+    "node_modules/**",
+    "public/**",
+    "test-results/**",
+    "playwright-report/**",
+    "package-lock.json"
+  ],
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "insertFinalNewline": true,
+  "jsxSingleQuote": false,
+  "objectWrap": "preserve",
+  "printWidth": 100,
+  "proseWrap": "preserve",
+  "quoteProps": "as-needed",
+  "singleQuote": true,
+  "sortPackageJson": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "semi": true,
+  "useTabs": false
+}

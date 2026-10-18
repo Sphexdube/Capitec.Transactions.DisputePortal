@@ -1,0 +1,6 @@
+@Capitec.Transactions.DisputePortal.Api_HostAddress = http://localhost:5278
+
+GET {{Capitec.Transactions.DisputePortal.Api_HostAddress}}/api/v1/demo-session
+Accept: application/json
+
+###

@@ -1,0 +1,65 @@
+erDiagram
+    CUSTOMER ||--o{ TRANSACTION : owns
+    CUSTOMER ||--o{ DISPUTE : submits
+    TRANSACTION ||--o{ DISPUTE : queried_by
+    DISPUTE ||--|{ DISPUTE_HISTORY : records
+    DISPUTE ||--o{ IDEMPOTENCY_RECORD : returns
+    DISPUTE ||--o{ CONFIRMATION : confirms
+    OUTBOX_MESSAGE ||--o| CONFIRMATION : produces
+    CURRENCY ||--o{ TRANSACTION : denominates
+
+    CUSTOMER {
+        bigint id PK
+        uuid external_id UK
+        varchar display_name
+    }
+    TRANSACTION {
+        bigint id PK
+        uuid external_id UK
+        bigint customer_id FK
+        timestamptz occurred_at
+        bigint amount_minor
+        char currency_code FK
+        varchar state
+    }
+    DISPUTE {
+        bigint id PK
+        uuid external_id UK
+        bigint transaction_id FK
+        bigint customer_id FK
+        varchar reason
+        varchar status
+        timestamptz created_at
+        bigint concurrency_version
+    }
+    DISPUTE_HISTORY {
+        bigint id PK
+        bigint dispute_id FK
+        varchar event_type
+        timestamptz occurred_at
+    }
+    IDEMPOTENCY_RECORD {
+        bigint id PK
+        bigint customer_id FK
+        varchar operation
+        varchar idempotency_key
+        varchar request_hash
+        bigint dispute_id FK
+    }
+    OUTBOX_MESSAGE {
+        bigint id PK
+        uuid event_id UK
+        varchar event_type
+        jsonb payload
+        timestamptz next_attempt_at
+    }
+    CONFIRMATION {
+        bigint id PK
+        bigint dispute_id FK
+        uuid outbox_event_id UK
+        timestamptz created_at
+    }
+    CURRENCY {
+        char code PK
+        smallint minor_unit_exponent
+    }

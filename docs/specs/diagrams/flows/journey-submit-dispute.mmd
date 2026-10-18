@@ -1,0 +1,13 @@
+flowchart TD
+    A[Customer signs in] --> B[View own transactions]
+    B --> C[Filter or page through results]
+    C --> D[Select transaction]
+    D --> E{Transaction is owned and eligible?}
+    E -- No --> F[Show non-disclosing error]
+    E -- Yes --> G[Choose reason and add optional explanation]
+    G --> H{Request is valid?}
+    H -- No --> I[Show validation errors]
+    H -- Yes --> J[Submit with idempotency key]
+    J --> K[Record dispute and history]
+    K --> L[Process simulated confirmation]
+    L --> M[Show dispute and confirmation in history]

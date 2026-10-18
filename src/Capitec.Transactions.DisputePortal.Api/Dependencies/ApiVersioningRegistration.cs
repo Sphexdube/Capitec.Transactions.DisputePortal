@@ -1,0 +1,25 @@
+using Asp.Versioning;
+
+namespace Capitec.Transactions.DisputePortal.Api.Dependencies
+{
+    public static class ApiVersioningRegistration
+    {
+        public static void Register(IServiceCollection services)
+        {
+            services
+                .AddApiVersioning(options =>
+                {
+                    options.DefaultApiVersion = new ApiVersion(1, 0);
+                    options.AssumeDefaultVersionWhenUnspecified = false;
+                    options.ReportApiVersions = true;
+                    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+                })
+                .AddMvc()
+                .AddApiExplorer(options =>
+                {
+                    options.GroupNameFormat = "'v'VVV";
+                    options.SubstituteApiVersionInUrl = true;
+                });
+        }
+    }
+}

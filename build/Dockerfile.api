@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /source
+
+COPY global.json Directory.Build.props .editorconfig .nuget.config ./
+COPY src/Capitec.Transactions.DisputePortal.Domain/*.csproj src/Capitec.Transactions.DisputePortal.Domain/
+COPY src/Capitec.Transactions.DisputePortal.Application/*.csproj src/Capitec.Transactions.DisputePortal.Application/
+COPY src/Capitec.Transactions.DisputePortal.Infrastructure/*.csproj src/Capitec.Transactions.DisputePortal.Infrastructure/
+COPY src/Capitec.Transactions.DisputePortal.Api/*.csproj src/Capitec.Transactions.DisputePortal.Api/
+RUN dotnet restore src/Capitec.Transactions.DisputePortal.Api/Capitec.Transactions.DisputePortal.Api.csproj \
+    --configfile .nuget.config
+
+COPY src/ src/
+RUN dotnet publish src/Capitec.Transactions.DisputePortal.Api/Capitec.Transactions.DisputePortal.Api.csproj \
+    --configuration Release --no-restore --output /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+RUN apt-get update \
+    && apt-get install --no-install-recommends --yes libgssapi-krb5-2 \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --from=build /app ./
+USER $APP_UID
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "Capitec.Transactions.DisputePortal.Api.dll"]

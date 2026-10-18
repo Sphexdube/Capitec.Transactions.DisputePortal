@@ -1,0 +1,86 @@
+name: capitec-dispute-portal
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: dispute_portal
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dispute_local_only}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - dispute_portal_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dispute_portal"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  migrations:
+    image: erikbra/grate@sha256:3c19c167f5860374bb1268b10b3dd9db7345eca699ada46d6e3ecdeeba2eb2be
+    platform: linux/amd64
+    entrypoint: [""]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -c
+      - >-
+        retry_count=0;
+        max_retries=8;
+        until ./grate
+        --connstring="Host=postgres;Port=5432;Database=dispute_portal;Username=postgres;Password=$${POSTGRES_PASSWORD};GSS Encryption Mode=Disable"
+        --sqlfilesdirectory=/db
+        --version=1.0.1
+        --databasetype=postgresql
+        --silent
+        --outputPath=/output
+        --createdatabase=true
+        --environment=LOCAL
+        --transaction=false;
+        do
+          retry_count=$$((retry_count + 1));
+          if [ $$retry_count -ge $$max_retries ]; then exit 1; fi;
+          echo "Grate attempt $$retry_count failed; retrying.";
+          sleep 5;
+        done
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dispute_local_only}
+    volumes:
+      - ./dbDisputePortal:/db:ro
+
+  api:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile.api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Local
+      ConnectionStrings__DisputePortal: Host=postgres;Port=5432;Database=dispute_portal;Username=postgres;Password=${POSTGRES_PASSWORD:-dispute_local_only}
+      Authentication__SigningKey: ${AUTHENTICATION_SIGNING_KEY:-local-only-demo-key-replace-with-32-or-more-characters}
+      DemoAuthentication__Enabled: "true"
+      ConfirmationWorker__Enabled: "true"
+    ports:
+      - "${API_PORT:-5147}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  web:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile.web
+    environment:
+      API_BASE_URL: http://api:8080
+      SESSION_COOKIE_SECURE: "false"
+    ports:
+      - "${WEB_PORT:-8080}:3000"
+    depends_on:
+      api:
+        condition: service_started
+
+volumes:
+  dispute_portal_data:
